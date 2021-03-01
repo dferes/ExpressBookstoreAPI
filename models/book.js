@@ -1,15 +1,10 @@
 const db = require("../db");
 
 
-/** Collection of related methods for books. */
-
+/* Collection of related methods for books. */
 class Book {
-  /** given an isbn, return book data with that isbn:
-   *
-   * => {isbn, amazon_url, author, language, pages, publisher, title, year}
-   *
-   **/
-
+  /* given an isbn, return book data with that isbn:
+   * => {isbn, amazon_url, author, language, pages, publisher, title, year} */
   static async findOne(isbn) {
     const bookRes = await db.query(
         `SELECT isbn,
@@ -30,13 +25,9 @@ class Book {
     return bookRes.rows[0];
   }
 
-  /** Return array of book data:
-   *
+  /* Return array of book data:
    * => [ {isbn, amazon_url, author, language,
-   *       pages, publisher, title, year}, ... ]
-   *
-   * */
-
+   *       pages, publisher, title, year}, ... ] */
   static async findAll() {
     const booksRes = await db.query(
         `SELECT isbn,
@@ -53,14 +44,12 @@ class Book {
     return booksRes.rows;
   }
 
-  /** create book in database from data, return book data:
+  /*  create book in database from data, return book data:
    *
    * {isbn, amazon_url, author, language, pages, publisher, title, year}
    *
    * => {isbn, amazon_url, author, language, pages, publisher, title, year}
-   *
-   * */
-
+   */
   static async create(data) {
     const result = await db.query(
       `INSERT INTO books (
@@ -97,13 +86,10 @@ class Book {
   }
 
   /** Update data with matching ID to data, return updated book.
-
    * {isbn, amazon_url, author, language, pages, publisher, title, year}
    *
    * => {isbn, amazon_url, author, language, pages, publisher, title, year}
-   *
-   * */
-
+   */
   static async update(isbn, data) {
     const result = await db.query(
       `UPDATE books SET 
@@ -142,8 +128,7 @@ class Book {
     return result.rows[0];
   }
 
-  /** remove book with matching isbn. Returns undefined. */
-
+  /* remove book with matching isbn. Returns undefined. */
   static async remove(isbn) {
     const result = await db.query(
       `DELETE FROM books 

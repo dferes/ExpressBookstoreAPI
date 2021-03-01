@@ -1,6 +1,3 @@
-/** Common config for bookstore. */
-
-
 let DB_URI = `postgresql://`;
 
 if (process.env.NODE_ENV === "test") {
