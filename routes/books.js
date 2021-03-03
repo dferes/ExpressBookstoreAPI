@@ -1,6 +1,6 @@
 const express = require("express");
 const Book = require("../models/book");
-const { jsonSchema } = require("jsonschema");
+const jsonSchema = require("jsonschema");
 const newBookSchema = require("../schemas/newBookSchema");
 const updateBookSchema = require("../schemas/updateBookSchema");
 
@@ -31,6 +31,7 @@ router.get("/:id", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   try {
     const result = jsonSchema.validate(req.body, newBookSchema);
+
     if (!result.valid){
       return next({
         status: 400,
@@ -39,7 +40,7 @@ router.post("/", async (req, res, next) => {
     }
     const book = await Book.create(req.body);
     
-    return res.status(201).json({ book });
+    return res.status(201).json({ book: book });
   } catch (err) {
     return next(err);
   }
@@ -48,10 +49,10 @@ router.post("/", async (req, res, next) => {
 /* PUT /[isbn]   bookData => {book: updatedBook}  */
 router.put("/:isbn", async (req, res, next) => {
   try {
-    if (!("isbn" in req.body)){
+    if (req.body.isbn){
       return next({
         status: 400,
-        error: "isbn required" 
+        error: "isbn already exists" 
       }); 
     }
     const result = jsonSchema.validate(req.body, updateBookSchema);
@@ -62,7 +63,7 @@ router.put("/:isbn", async (req, res, next) => {
       });
     }
     const book = await Book.update(req.params.isbn, req.body);
-    return res.json({ book });
+    return res.json({ book: book });
   } catch (err) {
     return next(err);
   }
